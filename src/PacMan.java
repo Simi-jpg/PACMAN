@@ -31,10 +31,10 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             "XXXXXXXXXXXXXXXXXXX"
     };
 
-    Timer gameLoop;
+    private char[] directions = { 'U', 'D', 'L', 'R', 'U', 'D', 'L', 'R' };
+    Random random = new Random();
 
-    private int width;
-    private int height;
+    Timer gameLoop;
 
     // wall
     private Image wallImg;
@@ -77,6 +77,17 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
         pacmanRightImg = new ImageIcon(getClass().getResource("./pacmanRight.png")).getImage();
 
         loadMap(height / tileSize, width / tileSize, tileSize);
+
+        for (GameObject ghost : ghosts) {
+
+            char newDirection = directions[random.nextInt(8)];
+
+            if (ghost instanceof Ghosts) {
+                Ghosts g = (Ghosts) ghost;
+
+                g.updateDirection(newDirection, walls);
+            }
+        }
 
         gameLoop = new Timer(50, this); // every 20 frms ps, we repaint
         gameLoop.start();
@@ -144,8 +155,6 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
 
     private void draw(Graphics g) {
 
-        pacman.draw(g);
-
         for (GameObject wall : walls) {
 
             wall.draw(g);
@@ -161,6 +170,9 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
 
             food.draw(g);
         }
+
+        pacman.draw(g);
+
     }
 
     // ActionListener starts
@@ -172,6 +184,15 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
             player.move(walls);
 
         }
+
+        for (GameObject ghost : ghosts) {
+
+            if (ghost instanceof Ghosts) {
+                Ghosts g = (Ghosts) ghost;
+                g.move(walls); // Add this to animate ghost movement
+            }
+        }
+
         repaint();
     }
 
@@ -196,21 +217,40 @@ public class PacMan extends JPanel implements ActionListener, KeyListener {
 
             if (e.getKeyCode() == KeyEvent.VK_UP) {
 
-                player.updateDirection('U');
+                player.updateDirection('U', walls);
 
             } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 
-                player.updateDirection('D');
+                player.updateDirection('D', walls);
 
             } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
 
-                player.updateDirection('L');
+                player.updateDirection('L', walls);
 
             } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 
-                player.updateDirection('R');
+                player.updateDirection('R', walls);
+            }
+
+            if (player.getDirection() == 'U') {
+
+                player.setImage(pacmanUpImg);
+
+            } else if (player.getDirection() == 'D') {
+
+                player.setImage(pacmanDownImg);
+
+            } else if (player.getDirection() == 'L') {
+
+                player.setImage(pacmanLeftImg);
+
+            } else if (player.getDirection() == 'R') {
+
+                player.setImage(pacmanRightImg);
+
             }
         }
+
     }
 
     // KeyListenerends

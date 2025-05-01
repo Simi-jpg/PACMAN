@@ -1,10 +1,12 @@
 import java.awt.Image;
 
-public class Wall extends GameObject {
+public class Wall extends StaticObjects {
 
     public Wall(int x, int y, int width, int height, Image image) {
 
         super(x, y, width, height, image);
+
+        this.setImage(image);
     }
 
 }

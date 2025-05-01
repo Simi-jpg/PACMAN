@@ -1,6 +1,6 @@
 import java.awt.*;
 
-public class Food extends GameObject {
+public class Food extends StaticObjects {
 
     private int size;
 
@@ -13,6 +13,6 @@ public class Food extends GameObject {
     public void draw(Graphics g) {
 
         g.setColor(Color.GREEN);
-        g.fillRect(x, y, size, size);
+        g.fillRect(this.getX(), this.getY(), size, size);
     }
 }

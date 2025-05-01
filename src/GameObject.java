@@ -2,11 +2,11 @@ import java.awt.*;
 
 public abstract class GameObject {
 
-    int x;
-    int y;
-    int width;
-    int height;
-    Image image;
+    private int x;
+    private int y;
+    private int width;
+    private int height;
+    private Image image;
 
     public GameObject() {
 
@@ -31,10 +31,44 @@ public abstract class GameObject {
 
         if (image != null)
             g.drawImage(image, x, y, width, height, null);
-
+        else
+            System.out.println("NULL");
     }
 
     public Rectangle getBounds() {
         return new Rectangle(x, y, width, height);
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public Image getImage() {
+
+        return image;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public void setImage(Image img) {
+        this.image = img;
     }
 }
